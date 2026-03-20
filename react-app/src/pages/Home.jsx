@@ -4,6 +4,7 @@ import { useTask } from '../contexts/TaskContext';
 import { useTeam } from '../contexts/TeamContext';
 import StreakDisplay from '../components/StreakDisplay';
 import TaskCard from '../components/TaskCard';
+import TaskDetailModal from '../components/TaskDetailModal';
 import Teams from './Teams';
 import Profile from './Profile';
 import './Home.css';
@@ -21,61 +22,6 @@ function StatCard({ icon, label, value, color }) {
       <span className="stat-card__icon" style={{ color }}>{icon}</span>
       <span className="stat-card__value" style={{ color }}>{value}</span>
       <span className="stat-card__label">{label}</span>
-    </div>
-  );
-}
-
-function TaskDetailModal({ task, onClose }) {
-  if (!task) return null;
-
-  const statusColors = { open: '#3B82F6', inProgress: '#F59E0B', completed: '#10B981' };
-  const statusLabels = { open: 'Open', inProgress: 'In Progress', completed: 'Completed' };
-  const priorityColors = { high: '#EF4444', medium: '#F59E0B', low: '#10B981' };
-  const priorityLabels = { high: 'High', medium: 'Medium', low: 'Low' };
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-dialog__header">
-          <h2>{task.title}</h2>
-          <button className="btn btn--icon" onClick={onClose}>✕</button>
-        </div>
-        <div className="modal-dialog__chips">
-          <span className="chip" style={{ background: `${statusColors[task.status]}15`, color: statusColors[task.status] }}>
-            {statusLabels[task.status] || task.status}
-          </span>
-          <span className="chip" style={{ background: `${priorityColors[task.priority]}15`, color: priorityColors[task.priority] }}>
-            {priorityLabels[task.priority] || task.priority}
-          </span>
-        </div>
-        {task.description && <p className="modal-dialog__desc">{task.description}</p>}
-        <div className="modal-dialog__grid">
-          <div className="modal-dialog__field">
-            <label>Team</label>
-            <span>{task.teamName}</span>
-          </div>
-          <div className="modal-dialog__field">
-            <label>Created by</label>
-            <span>{task.createdByName}</span>
-          </div>
-        </div>
-        <div className="modal-dialog__field">
-          <label>Assignees</label>
-        </div>
-        <div className="modal-dialog__assignees">
-          {Object.entries(task.assigneeNames || {}).map(([id, name]) => (
-            <div key={id} className="modal-dialog__assignee">
-              <div className="avatar avatar--sm">{name?.[0]?.toUpperCase() || '?'}</div>
-              <span>{name}</span>
-              {task.completedBy?.[id] ? (
-                <span className="assignee-done">✓</span>
-              ) : (
-                <span className="assignee-pending">○</span>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
@@ -155,7 +101,7 @@ function Dashboard() {
         </div>
       )}
 
-      <TaskDetailModal task={selectedTask} onClose={() => setSelectedTask(null)} />
+      <TaskDetailModal task={selectedTask} onClose={() => setSelectedTask(null)} currentUserId={user.uid} />
     </div>
   );
 }

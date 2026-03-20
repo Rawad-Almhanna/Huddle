@@ -101,9 +101,34 @@ export function TaskProvider({ children }) {
     );
   }, []);
 
+  const editTask = useCallback((taskId, updates) => {
+    setAllTasks((prev) =>
+      prev.map((task) => {
+        if (task.id !== taskId) return task;
+        const assigneeNames = updates.assigneeNames || task.assigneeNames;
+        return { ...task, ...updates, assigneeNames, updatedAt: new Date() };
+      })
+    );
+  }, []);
+
+  const addComment = useCallback((taskId, comment) => {
+    setAllTasks((prev) =>
+      prev.map((task) => {
+        if (task.id !== taskId) return task;
+        const comments = [...(task.comments || []), comment];
+        return { ...task, comments, updatedAt: new Date() };
+      })
+    );
+  }, []);
+
   const deleteTask = useCallback((taskId) => {
     setAllTasks((prev) => prev.filter((t) => t.id !== taskId));
   }, []);
+
+  const getTask = useCallback(
+    (taskId) => allTasks.find((t) => t.id === taskId) || null,
+    [allTasks]
+  );
 
   const clearTeamTasks = useCallback(() => setCurrentTeamId(null), []);
   const clearError = useCallback(() => setError(null), []);
@@ -120,8 +145,11 @@ export function TaskProvider({ children }) {
     loadUserTasks,
     loadTeamTasks,
     createTask,
+    editTask,
+    addComment,
     markComplete,
     deleteTask,
+    getTask,
     clearTeamTasks,
     clearError,
   };

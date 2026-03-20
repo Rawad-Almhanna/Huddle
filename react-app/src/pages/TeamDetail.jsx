@@ -4,6 +4,7 @@ import { useTeam } from '../contexts/TeamContext';
 import { useTask } from '../contexts/TaskContext';
 import TaskCard from '../components/TaskCard';
 import CreateTask from './CreateTask';
+import TaskDetailModal from '../components/TaskDetailModal';
 import './TeamDetail.css';
 
 export default function TeamDetail({ teamId, onBack }) {
@@ -12,6 +13,7 @@ export default function TeamDetail({ teamId, onBack }) {
   const { teamTasks, loadTeamTasks, markComplete } = useTask();
   const [showInfo, setShowInfo] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const team = getTeam(teamId);
 
@@ -74,6 +76,7 @@ export default function TeamDetail({ teamId, onBack }) {
               key={task.id}
               task={task}
               currentUserId={user.uid}
+              onTap={() => setSelectedTask(task)}
               onComplete={
                 task.completedBy?.[user.uid]
                   ? undefined
@@ -107,6 +110,8 @@ export default function TeamDetail({ teamId, onBack }) {
           </div>
         </div>
       )}
+
+      <TaskDetailModal task={selectedTask} onClose={() => setSelectedTask(null)} currentUserId={user.uid} />
     </div>
   );
 }

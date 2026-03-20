@@ -1,0 +1,189 @@
+/* ── Wider modal for task detail ── */
+.modal-dialog--wide {
+  max-width: 600px;
+}
+
+/* ── Tabs ── */
+.modal-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 20px;
+}
+
+.modal-tab {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #9e9e9e;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.modal-tab:hover {
+  color: #616161;
+}
+
+.modal-tab--active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.modal-tab__badge {
+  background: var(--primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* ── Body ── */
+.modal-dialog__body {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+/* ── Edit form inside modal ── */
+.modal-edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+/* ── Small button variant ── */
+.btn--sm {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+/* ── Comments ── */
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-form__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-input {
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.comment-input:focus {
+  border-color: var(--primary);
+}
+
+.comment-input::placeholder {
+  color: #bdbdbd;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comments-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: #bdbdbd;
+}
+
+.comments-empty span {
+  font-size: 36px;
+  opacity: 0.5;
+}
+
+.comments-empty p {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.comment-item__body {
+  flex: 1;
+  min-width: 0;
+  background: #f8f9fe;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.comment-item__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.comment-item__author {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.comment-item__time {
+  font-size: 11px;
+  color: #9e9e9e;
+}
+
+.comment-item__text {
+  font-size: 14px;
+  color: #424242;
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .modal-dialog--wide {
+    max-width: 100%;
+    width: 96%;
+  }
+
+  .modal-dialog__body {
+    max-height: 55vh;
+  }
+
+  .comment-form__row {
+    flex-wrap: wrap;
+  }
+
+  .comment-form__row .avatar {
+    display: none;
+  }
+
+  .comment-input {
+    min-width: 0;
+  }
+}
