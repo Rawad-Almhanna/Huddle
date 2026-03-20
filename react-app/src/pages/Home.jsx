@@ -25,7 +25,7 @@ function StatCard({ icon, label, value, color }) {
   );
 }
 
-function TaskDetailSheet({ task, onClose }) {
+function TaskDetailModal({ task, onClose }) {
   if (!task) return null;
 
   const statusColors = { open: '#3B82F6', inProgress: '#F59E0B', completed: '#10B981' };
@@ -35,10 +35,12 @@ function TaskDetailSheet({ task, onClose }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-sheet" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-sheet__handle" />
-        <h2 className="modal-sheet__title">{task.title}</h2>
-        <div className="modal-sheet__chips">
+      <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-dialog__header">
+          <h2>{task.title}</h2>
+          <button className="btn btn--icon" onClick={onClose}>✕</button>
+        </div>
+        <div className="modal-dialog__chips">
           <span className="chip" style={{ background: `${statusColors[task.status]}15`, color: statusColors[task.status] }}>
             {statusLabels[task.status] || task.status}
           </span>
@@ -46,21 +48,23 @@ function TaskDetailSheet({ task, onClose }) {
             {priorityLabels[task.priority] || task.priority}
           </span>
         </div>
-        {task.description && <p className="modal-sheet__desc">{task.description}</p>}
-        <div className="modal-sheet__field">
-          <label>Team</label>
-          <span>{task.teamName}</span>
+        {task.description && <p className="modal-dialog__desc">{task.description}</p>}
+        <div className="modal-dialog__grid">
+          <div className="modal-dialog__field">
+            <label>Team</label>
+            <span>{task.teamName}</span>
+          </div>
+          <div className="modal-dialog__field">
+            <label>Created by</label>
+            <span>{task.createdByName}</span>
+          </div>
         </div>
-        <div className="modal-sheet__field">
-          <label>Created by</label>
-          <span>{task.createdByName}</span>
-        </div>
-        <div className="modal-sheet__field">
+        <div className="modal-dialog__field">
           <label>Assignees</label>
         </div>
-        <div className="modal-sheet__assignees">
+        <div className="modal-dialog__assignees">
           {Object.entries(task.assigneeNames || {}).map(([id, name]) => (
-            <div key={id} className="modal-sheet__assignee">
+            <div key={id} className="modal-dialog__assignee">
               <div className="avatar avatar--sm">{name?.[0]?.toUpperCase() || '?'}</div>
               <span>{name}</span>
               {task.completedBy?.[id] ? (
@@ -86,46 +90,50 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div className="dashboard__header">
-        <div>
-          <span className="dashboard__greeting">{getGreeting()}</span>
-          <h1 className="dashboard__name">{user.displayName}</h1>
+      <div className="dashboard__top">
+        <div className="dashboard__header">
+          <div>
+            <span className="dashboard__greeting">{getGreeting()}</span>
+            <h1 className="dashboard__name">{user.displayName}</h1>
+          </div>
+          <StreakDisplay user={user} compact />
         </div>
-        <StreakDisplay user={user} compact />
+
+        <div className="dashboard__stats">
+          <StatCard icon="📋" label="Pending" value={pendingTasks.length} color="#3B82F6" />
+          <StatCard icon="✅" label="Done Today" value={todayCompletedCount} color="#10B981" />
+          <StatCard icon="❗" label="High Priority" value={highCount} color="#EF4444" />
+        </div>
       </div>
 
-      <div className="dashboard__stats">
-        <StatCard icon="📋" label="Pending" value={pendingTasks.length} color="#3B82F6" />
-        <StatCard icon="✅" label="Done Today" value={todayCompletedCount} color="#10B981" />
-        <StatCard icon="❗" label="High" value={highCount} color="#EF4444" />
-      </div>
+      <div className="dashboard__section">
+        <div className="dashboard__tasks-header">
+          <h2>Your Tasks</h2>
+          {pendingTasks.length > 0 && (
+            <span className="dashboard__pending-count">{pendingTasks.length} pending</span>
+          )}
+        </div>
 
-      <div className="dashboard__tasks-header">
-        <h2>Your Tasks</h2>
-        {pendingTasks.length > 0 && (
-          <span className="dashboard__pending-count">{pendingTasks.length} pending</span>
+        {pendingTasks.length === 0 ? (
+          <div className="empty-state">
+            <span className="empty-state__icon">🎉</span>
+            <h3>All caught up!</h3>
+            <p>No pending tasks. Join a team to get started.</p>
+          </div>
+        ) : (
+          <div className="dashboard__tasks-grid">
+            {pendingTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                currentUserId={user.uid}
+                onTap={() => setSelectedTask(task)}
+                onComplete={() => setConfirmTask(task)}
+              />
+            ))}
+          </div>
         )}
       </div>
-
-      {pendingTasks.length === 0 ? (
-        <div className="empty-state">
-          <span className="empty-state__icon">🎉</span>
-          <h3>All caught up!</h3>
-          <p>No pending tasks. Join a team to get started.</p>
-        </div>
-      ) : (
-        <div className="dashboard__tasks">
-          {pendingTasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              currentUserId={user.uid}
-              onTap={() => setSelectedTask(task)}
-              onComplete={() => setConfirmTask(task)}
-            />
-          ))}
-        </div>
-      )}
 
       {confirmTask && (
         <div className="modal-overlay" onClick={() => setConfirmTask(null)}>
@@ -148,13 +156,13 @@ function Dashboard() {
         </div>
       )}
 
-      <TaskDetailSheet task={selectedTask} onClose={() => setSelectedTask(null)} />
+      <TaskDetailModal task={selectedTask} onClose={() => setSelectedTask(null)} />
     </div>
   );
 }
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: '🏠' },
+  { id: 'home', label: 'Dashboard', icon: '📊' },
   { id: 'teams', label: 'Teams', icon: '👥' },
   { id: 'profile', label: 'Profile', icon: '👤' },
 ];
@@ -175,24 +183,39 @@ export default function Home() {
   if (!user) return null;
 
   return (
-    <div className="home-layout">
-      <div className="home-layout__content">
+    <div className="app-layout">
+      <aside className="sidebar">
+        <div className="sidebar__brand">
+          <div className="sidebar__logo">H</div>
+          <span className="sidebar__title">Huddle</span>
+        </div>
+        <nav className="sidebar__nav">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              className={`sidebar__link ${tab === item.id ? 'sidebar__link--active' : ''}`}
+              onClick={() => setTab(item.id)}
+            >
+              <span className="sidebar__link-icon">{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="sidebar__footer">
+          <div className="sidebar__user">
+            <div className="avatar avatar--sm">{user.displayName?.[0]?.toUpperCase()}</div>
+            <div className="sidebar__user-info">
+              <span className="sidebar__user-name">{user.displayName}</span>
+              <span className="sidebar__user-email">{user.email}</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <main className="main-content">
         {tab === 'home' && <Dashboard />}
         {tab === 'teams' && <Teams />}
         {tab === 'profile' && <Profile />}
-      </div>
-      <nav className="bottom-nav">
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item.id}
-            className={`bottom-nav__item ${tab === item.id ? 'bottom-nav__item--active' : ''}`}
-            onClick={() => setTab(item.id)}
-          >
-            <span className="bottom-nav__icon">{item.icon}</span>
-            <span className="bottom-nav__label">{item.label}</span>
-          </button>
-        ))}
-      </nav>
+      </main>
     </div>
   );
 }

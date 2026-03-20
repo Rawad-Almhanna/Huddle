@@ -1,16 +1,17 @@
 .team-detail {
-  padding: 0 20px;
-  padding-bottom: 80px;
+  padding: 32px 40px;
+  max-width: 960px;
 }
 
 .team-detail__header {
-  padding: 16px;
+  padding: 20px;
 }
 
 .team-detail__desc {
-  font-size: 13px;
+  font-size: 14px;
   color: #757575;
   margin: 0 0 12px;
+  line-height: 1.5;
 }
 
 .team-detail__meta {
@@ -34,15 +35,19 @@
   gap: 4px;
 }
 
+.team-detail__code:hover {
+  text-decoration: underline;
+}
+
 .team-detail__tasks-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 16px 0 8px;
+  margin: 24px 0 12px;
 }
 
 .team-detail__tasks-bar h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0;
 }
@@ -53,31 +58,32 @@
 }
 
 .team-detail__list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 12px;
 }
 
 .fab {
   position: fixed;
-  bottom: 80px;
-  right: 50%;
-  transform: translateX(calc(50% + 160px));
+  bottom: 32px;
+  right: 32px;
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 16px;
-  padding: 14px 24px;
+  border-radius: 14px;
+  padding: 14px 28px;
   font-size: 14px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.35);
-  transition: background 0.15s;
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.35);
+  transition: all 0.15s;
+  transform: none;
 }
 
 .fab:hover {
   background: #5b54e0;
+  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.45);
 }
 
 .member-list {

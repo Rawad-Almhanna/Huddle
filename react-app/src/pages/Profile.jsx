@@ -24,16 +24,20 @@ export default function Profile() {
 
   return (
     <div className="profile-page">
-      <div className="profile-page__avatar" style={{ background: `${user.avatarColor || '#6C63FF'}33` }}>
-        <span style={{ color: user.avatarColor || '#6C63FF' }}>
-          {user.displayName?.[0]?.toUpperCase() || '?'}
-        </span>
+      <div className="profile-page__top">
+        <div className="profile-page__avatar" style={{ background: `${user.avatarColor || '#6C63FF'}33` }}>
+          <span style={{ color: user.avatarColor || '#6C63FF' }}>
+            {user.displayName?.[0]?.toUpperCase() || '?'}
+          </span>
+        </div>
+        <div className="profile-page__info">
+          <h1 className="profile-page__name">{user.displayName}</h1>
+          <p className="profile-page__email">{user.email}</p>
+          <p className="profile-page__joined">
+            Joined {format(new Date(user.joinedAt), 'MMMM yyyy')}
+          </p>
+        </div>
       </div>
-      <h1 className="profile-page__name">{user.displayName}</h1>
-      <p className="profile-page__email">{user.email}</p>
-      <p className="profile-page__joined">
-        Joined {format(new Date(user.joinedAt), 'MMMM yyyy')}
-      </p>
 
       <StreakDisplay user={user} />
 
@@ -68,7 +72,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <button className="btn btn--outline btn--danger btn--full" onClick={() => setShowLogout(true)}>
+      <button className="btn btn--outline btn--danger" onClick={() => setShowLogout(true)}>
         🚪 Sign Out
       </button>
 
