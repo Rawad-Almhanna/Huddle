@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/team_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/task_provider.dart';
-import '../../services/firestore_service.dart';
+import '../../providers/team_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/task_card.dart';
 import '../tasks/create_task_screen.dart';
@@ -19,22 +19,17 @@ class TeamDetailScreen extends StatefulWidget {
 }
 
 class _TeamDetailScreenState extends State<TeamDetailScreen> {
-  final FirestoreService _service = FirestoreService();
   Team? _team;
   bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadTeam();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final team = context.read<TeamProvider>().getTeam(widget.teamId);
+      setState(() { _team = team; _loading = false; });
       context.read<TaskProvider>().loadTeamTasks(widget.teamId);
     });
-  }
-
-  Future<void> _loadTeam() async {
-    final team = await _service.getTeam(widget.teamId);
-    if (mounted) setState(() { _team = team; _loading = false; });
   }
 
   @override

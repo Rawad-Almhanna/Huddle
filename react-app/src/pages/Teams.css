@@ -1,0 +1,99 @@
+.teams-page {
+  padding: 20px;
+}
+
+.teams-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.teams-page__header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.teams-page__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--primary);
+  transition: background 0.15s;
+}
+
+.action-btn:hover {
+  background: rgba(108, 99, 255, 0.18);
+}
+
+.action-btn--filled {
+  background: var(--primary);
+  color: white;
+}
+
+.action-btn--filled:hover {
+  background: #5b54e0;
+}
+
+.teams-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.join-hint {
+  font-size: 13px;
+  color: #757575;
+  margin: 0 0 16px;
+}
+
+.join-input {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 12px;
+  font-family: inherit;
+  margin-bottom: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.join-input:focus {
+  border-color: var(--primary);
+  border-width: 2px;
+  padding: 11px;
+}
+
+.join-input::placeholder {
+  color: #e0e0e0;
+  letter-spacing: 6px;
+}
+
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.spinner--dark {
+  border-color: rgba(108, 99, 255, 0.2);
+  border-top-color: var(--primary);
+}

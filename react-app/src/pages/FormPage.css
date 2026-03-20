@@ -1,0 +1,135 @@
+.form-page {
+  padding: 0 20px 20px;
+}
+
+.form-page__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.form-page__bar h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-page__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-textarea {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-textarea:focus {
+  border-color: var(--primary);
+  border-width: 2px;
+  padding: 15px 19px;
+}
+
+.form-textarea::placeholder {
+  color: #bdbdbd;
+}
+
+.priority-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.priority-option {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.assignee-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.assignee-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.assignee-chip--active {
+  border-color: var(--primary);
+  background: rgba(108, 99, 255, 0.08);
+  color: var(--primary);
+}
+
+.assignee-chip__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(108, 99, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.invite-result {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.invite-result h3 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.invite-result p {
+  color: #757575;
+  margin: 0 0 16px;
+}
+
+.invite-code {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  background: #f5f5f5;
+  padding: 14px 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}

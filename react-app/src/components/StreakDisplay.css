@@ -1,0 +1,114 @@
+.streak-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 152, 0, 0.12);
+  border-radius: 12px;
+}
+
+.streak-compact__emoji {
+  font-size: 18px;
+}
+
+.streak-compact__count {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff9800;
+}
+
+.streak-card {
+  padding: 20px;
+}
+
+.streak-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak-card__icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #ff9800, rgba(255, 152, 0, 0.7));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.streak-card__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.streak-card__tier {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ff9800;
+}
+
+.streak-card__stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.streak-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: #fafafa;
+  border-radius: 12px;
+}
+
+.streak-stat__icon {
+  font-size: 20px;
+}
+
+.streak-stat__value {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.streak-stat__value--small {
+  font-size: 11px;
+}
+
+.streak-stat__label {
+  font-size: 11px;
+  color: #9e9e9e;
+  margin-top: 2px;
+}
+
+.streak-card__progress {
+  margin-top: 16px;
+}
+
+.streak-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #757575;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.streak-progress__bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.streak-progress__fill {
+  height: 100%;
+  background: #ff9800;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}

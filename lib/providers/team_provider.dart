@@ -1,37 +1,28 @@
-import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/team_model.dart';
-import '../services/firestore_service.dart';
 
 class TeamProvider extends ChangeNotifier {
-  final FirestoreService _service = FirestoreService();
-
-  List<Team> _teams = [];
+  final List<Team> _teams = [];
   bool _loading = false;
   String? _error;
-  StreamSubscription? _subscription;
+  int _nextId = 1;
 
   List<Team> get teams => _teams;
   bool get loading => _loading;
   String? get error => _error;
 
   void loadTeams(String uid) {
-    _subscription?.cancel();
-    _loading = true;
+    _loading = false;
     notifyListeners();
+  }
 
-    _subscription = _service.getUserTeams(uid).listen(
-      (teams) {
-        _teams = teams;
-        _loading = false;
-        notifyListeners();
-      },
-      onError: (e) {
-        _error = 'Failed to load teams';
-        _loading = false;
-        notifyListeners();
-      },
-    );
+  Team? getTeam(String teamId) {
+    try {
+      return _teams.firstWhere((t) => t.id == teamId);
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<Team?> createTeam({
@@ -40,55 +31,39 @@ class TeamProvider extends ChangeNotifier {
     required String leaderId,
     required String leaderName,
   }) async {
-    try {
-      _error = null;
-      final team = await _service.createTeam(
-        name: name,
-        description: description,
-        leaderId: leaderId,
-        leaderName: leaderName,
-      );
-      return team;
-    } catch (e) {
-      _error = 'Failed to create team';
-      notifyListeners();
-      return null;
-    }
+    _error = null;
+    final code = _generateInviteCode();
+    final team = Team(
+      id: 'team-${_nextId++}',
+      name: name,
+      description: description,
+      leaderId: leaderId,
+      leaderName: leaderName,
+      memberIds: [leaderId],
+      memberNames: {leaderId: leaderName},
+      inviteCode: code,
+    );
+    _teams.add(team);
+    notifyListeners();
+    return team;
   }
 
   Future<Team?> joinTeam(String code, String uid, String userName) async {
-    try {
-      _error = null;
-      final team = await _service.joinTeamByCode(code, uid, userName);
-      if (team == null) {
-        _error = 'Invalid invite code';
-        notifyListeners();
-      }
-      return team;
-    } catch (e) {
-      _error = 'Failed to join team';
-      notifyListeners();
-      return null;
-    }
+    _error = 'Join team is disabled in offline mode';
+    notifyListeners();
+    return null;
   }
 
-  Future<void> leaveTeam(String teamId, String uid) async {
-    try {
-      await _service.leaveTeam(teamId, uid);
-    } catch (e) {
-      _error = 'Failed to leave team';
-      notifyListeners();
-    }
-  }
+  Future<void> leaveTeam(String teamId, String uid) async {}
 
   void clearError() {
     _error = null;
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
+  String _generateInviteCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    final rand = Random.secure();
+    return List.generate(6, (_) => chars[rand.nextInt(chars.length)]).join();
   }
 }
