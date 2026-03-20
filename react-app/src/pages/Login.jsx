@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './Auth.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login, error: authError, clearError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -20,22 +22,28 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    clearError();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length) return;
+
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    const success = await login(email.trim(), password);
+    setSubmitting(false);
+
+    if (success) {
       navigate('/');
-    }, 500);
+    }
   }
 
   return (
     <div className="auth-page">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <div className="auth-logo">✓</div>
+        <div className="auth-logo">H</div>
         <h1 className="auth-title">Huddle</h1>
         <p className="auth-subtitle">Collaborate. Complete. Conquer.</p>
+
+        {authError && <div className="auth-error">{authError}</div>}
 
         <div className="form-group">
           <div className="input-wrapper">

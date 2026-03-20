@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './Auth.css';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { register, error: authError, clearError } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,14 +29,18 @@ export default function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    clearError();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length) return;
+
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    const success = await register(email.trim(), password, name.trim());
+    setSubmitting(false);
+
+    if (success) {
       navigate('/');
-    }, 500);
+    }
   }
 
   return (
@@ -45,6 +51,8 @@ export default function Register() {
       <form className="auth-form" onSubmit={handleSubmit}>
         <h1 className="auth-title">Create Account</h1>
         <p className="auth-subtitle">Join your team and start tracking tasks</p>
+
+        {authError && <div className="auth-error">{authError}</div>}
 
         <div className="form-group">
           <div className="input-wrapper">
